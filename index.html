@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            margin: 0%;
+            padding: 0%;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="con" width="600" height="600"> </canvas>
+    <button style="position: absolute; top:10px; left:10px;" id="p1" onclick="p1(1,1,300,600,600,10,'')"> Julia Design 1
+    </button>
+    <br>
+    <button style="position: absolute; top:30px; left:10px;" id="p2" onclick="p1(2,1.5,200,600,600,10,'')"> Julia Design
+        2
+    </button>
+    <button style="position: absolute; top:50px; left:10px;" id="p31" onclick="p1(1,0,600,600,600,100,'')"> Julia Design
+        3
+    </button>
+    <br>
+    <button style="position: absolute; top:70px; left:10px;" id="p32" onclick="p1(2,1.5,200,600,600,100,'')"> Julia
+        Design
+        4
+    </button>
+    <button style="position: absolute; top:90px; left:10px;" id="p41" onclick="p1(0.7,0.6,2900,600,600,100,'')"> Julia
+        Design 5
+    </button>
+    <br>
+    <button style="position: absolute; top:110px; left:10px;" id="p42" onclick="p1(2,1.5,200,600,600,100,'c')"> Julia
+        Design 6
+    </button>
+    <br>
+    <button style="position: absolute; top:130px; left:10px;" id="p43" onclick="p1(0.7,0.6,2900,600,600,400,'c')"> Julia
+        Design 7
+    </button>
+    <br>
+    <button style="position: absolute; top:150px; left:10px;" id="p44" onclick="p1(0,0,600,600,600,400,'c')"> Julia
+        Design 8
+    </button>
+    <br>
+    <button style="position: absolute; top:170px; left:10px;" id="p51" onclick="p1(1,0,600,600,600,10,'c')"> Julia
+        Design 9
+    </button>
+    <br>
+    <button style="position: absolute; top:190px; left:10px;" id="p51" onclick="p1(1,0,600,600,600,100,'c')"> Julia
+        Design 10
+    </button>
+
+    <script>
+
+        var canvas = document.querySelector('#con');
+        var Canvas = canvas.getContext('2d');
+        function JuliaSet(x, y) {
+
+        }
+
+        function checkifBelongsToMandelBrotSet(x, y, itr, c) {
+            var RealComponentResult = x;
+            var imaginaryComponentResult = y;
+            // 
+            // console.log(x,y,itr,c);
+            for (var i = 0; i < itr; i++) {
+                var tempRealComponent = RealComponentResult * RealComponentResult - imaginaryComponentResult * imaginaryComponentResult + x;
+                var tempImaginaryComponent = 2 * RealComponentResult * imaginaryComponentResult + y;
+                RealComponentResult = tempRealComponent;
+                imaginaryComponentResult = tempImaginaryComponent;
+                if (c) {
+                    if (RealComponentResult * imaginaryComponentResult > 5) {
+                        return (i / itr * 100);
+                    }
+                }
+
+            }
+            if (!c) {
+                if (RealComponentResult * imaginaryComponentResult < 5) {
+                    return 't';
+                }
+            }
+
+            return 0;
+        }
+
+        function p1(px, py, mf, cw, ch, itr, isColor) {
+            Canvas.clearRect(0, 0, 600, 600);
+            var magnificationFactor = mf;
+            var panX = px;
+            var panY = py;
+            console.log(px, py, mf, cw, ch, itr, isColor);
+            Canvas.width = cw;
+            Canvas.height = ch;
+            // console.log(Canvas.width, Canvas.height);
+            for (var x = 0; x < Canvas.width; x++) {
+                for (var y = 0; y < Canvas.height; y++) {
+                    if (isColor) {
+                        Canvas.fillStyle = "hsl(0, 100%, " + checkifBelongsToMandelBrotSet(x / magnificationFactor - panX, y / magnificationFactor - panY, itr, 'c') + "%)";
+                        Canvas.fillRect(x, y, 1, 1);
+                    }
+                    else {
+                        if (checkifBelongsToMandelBrotSet(x / magnificationFactor - panX, y / magnificationFactor - panY, itr, '') == 't') {
+                            // Here the range of first and second parameters are -1 to 1.
+                            Canvas.fillRect(x, y, 1, 1);
+                        }
+                    }
+
+                }
+            }
+        }
+
+
+
+    </script>
+</body>
+
+</html>
